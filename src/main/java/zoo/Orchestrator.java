@@ -18,7 +18,7 @@ public class Orchestrator extends Component {
 		this.orchName = orchName;
 	}
 
-	public boolean register(String url) throws InterruptedException {
+	public boolean register(String url){
 		final ReentrantLock registration = new ReentrantLock();
 		try {
 			final String s2 = Constants.PATH_ORCHESTRATOR_STATUS + "/" + orchName;
@@ -44,6 +44,8 @@ public class Orchestrator extends Component {
 				System.err.println(s1 + " existed before, so this node cannot be created");
 			}
 			registration.lock();
+		} catch (InterruptedException e) {
+			e.printStackTrace();
 		} catch (KeeperException e) {
 			e.printStackTrace();
 			System.exit(1);

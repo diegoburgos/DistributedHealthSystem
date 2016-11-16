@@ -1,5 +1,6 @@
 package zoo;
 import java.io.IOException;
+import java.util.List;
 import java.util.concurrent.CountDownLatch;
 
 import org.apache.zookeeper.CreateMode;
@@ -11,23 +12,26 @@ import org.apache.zookeeper.ZooDefs;
 import org.apache.zookeeper.ZooKeeper;
 import org.apache.zookeeper.data.Stat;
 
-public class ZooKeeperConnection {
+public class ZookeeperConnection {
 
-	// Declare zookeeper instance to access ZooKeeper ensemble
 	protected ZooKeeper zk;
 	final CountDownLatch connectedSignal = new CountDownLatch(1);
 
-	// Method to connect zookeeper ensemble.
-	public ZooKeeper connect(String host) throws IOException,InterruptedException {
-		zk = new ZooKeeper(host,5000,new Watcher() {
-			public void process(WatchedEvent we) {
-				if (we.getState() == KeeperState.SyncConnected) {
-					connectedSignal.countDown();
+	public ZooKeeper connect(String host) {
+		try {
+			zk = new ZooKeeper(host,5000,new Watcher() {
+				public void process(WatchedEvent we) {
+					if (we.getState() == KeeperState.SyncConnected) {
+						connectedSignal.countDown();
+					}
 				}
-			}
-		});
-
-		connectedSignal.await();
+			});
+			connectedSignal.await();
+		} catch (IOException e) {
+			e.printStackTrace();
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
 		return zk;
 	}
 
@@ -36,11 +40,18 @@ public class ZooKeeperConnection {
 		zk.close();
 	}
 
-	public boolean createValueInZK (String path, String value) throws KeeperException, InterruptedException {
-		if (zk.exists(path, true) == null) {
-			zk.create(path, value.getBytes(), 
-					ZooDefs.Ids.OPEN_ACL_UNSAFE, CreateMode.PERSISTENT_SEQUENTIAL);
-			return true;
+	public boolean createValueInZK (String path, String value) {
+		try {
+			if (zk.exists(path, true) == null) {
+
+				zk.create(path, value.getBytes(), 
+						ZooDefs.Ids.OPEN_ACL_UNSAFE, CreateMode.PERSISTENT);
+				return true;
+			}
+		} catch (KeeperException e) {
+			e.printStackTrace();
+		} catch (InterruptedException e) {
+			e.printStackTrace();
 		}
 		return false;
 	}
@@ -67,9 +78,23 @@ public class ZooKeeperConnection {
 			e.printStackTrace();
 		}
 	}
-	
-	public Stat znode_exists(String path) throws 
-	KeeperException,InterruptedException {
+
+	public Stat znode_exists(String path) throws KeeperException,InterruptedException {
 		return zk.exists(path,true);
+	}
+
+	public ZooKeeper getZkInstance () {
+		return zk;
+	}
+
+	public List<String> getChilds(String path) {
+		try {
+			return zk.getChildren(path, false);
+		} catch (KeeperException e) {
+			e.printStackTrace();
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+		return null;
 	}
 }

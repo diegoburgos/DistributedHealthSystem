@@ -16,4 +16,6 @@ public class Constants {
 	public static final String NODE_STATUS_STARTING = "starting";
 	public static final String NODE_STATUS_RUNNING = "running";
 	public static final String NODE_STATUS_OFF = "off";
+	
+	public static final String PATH_QUERY_DEPLOYMENT = PATH_APP_NAME + "/queries";
 }

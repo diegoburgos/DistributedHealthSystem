@@ -12,10 +12,10 @@ import utils.ListComparator;
 
 public class WatcherOrch implements Watcher {
 	private ZooKeeper zk;
-	private ZooKeeperConnection zkConn;
+	private ZookeeperConnection zkConn;
 	private List<String> orcState;
 
-	public WatcherOrch (ZooKeeper zk, ZooKeeperConnection zkConn, List<String> orcState) {
+	public WatcherOrch (ZooKeeper zk, ZookeeperConnection zkConn, List<String> orcState) {
 		this.zk = zk;
 		this.zkConn = zkConn;
 		this.orcState = orcState;

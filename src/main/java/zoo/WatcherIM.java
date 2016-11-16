@@ -13,10 +13,10 @@ import org.apache.zookeeper.ZooKeeper;
 
 public class WatcherIM implements Watcher {
 	private ZooKeeper zk;
-	private  ZooKeeperConnection zkConn;
+	private  ZookeeperConnection zkConn;
 	private List<String> imState;
 
-	public WatcherIM (ZooKeeper zk, ZooKeeperConnection zkConn, List<String> imState) {
+	public WatcherIM (ZooKeeper zk, ZookeeperConnection zkConn, List<String> imState) {
 		this.zk = zk;
 		this.zkConn = zkConn;
 		this.imState = imState;

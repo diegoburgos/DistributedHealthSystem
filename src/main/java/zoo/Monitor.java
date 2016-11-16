@@ -1,6 +1,5 @@
 package zoo;
 
-import java.io.IOException;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -8,26 +7,22 @@ import org.apache.zookeeper.CreateMode;
 import org.apache.zookeeper.KeeperException;
 import org.apache.zookeeper.ZooDefs;
 
-public class Monitor extends ZooKeeperConnection {
+public class Monitor extends ZookeeperConnection {
 	private List<String> orcChilds = new LinkedList<String>();
 	private List<String> imChilds = new LinkedList<String>();
 
 	public Monitor (String zooUrl) {
-		try {
-			this.connect(zooUrl);
-		} catch (IOException e) {
-			e.printStackTrace();
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}
+		this.connect(zooUrl);
 	}
-	
+
 	public boolean start() {
 		try {
 			if (zk.exists(Constants.PATH_APP_NAME, true) == null) {
 				zk.create(Constants.PATH_APP_NAME, "MyApp".getBytes(), 
 						ZooDefs.Ids.OPEN_ACL_UNSAFE, CreateMode.PERSISTENT);
 				
+				zk.create(Constants.PATH_QUERY_DEPLOYMENT, null, 
+						ZooDefs.Ids.OPEN_ACL_UNSAFE, CreateMode.PERSISTENT);
 				zk.create(Constants.PATH_ORCHESTRATOR, null, 
 						ZooDefs.Ids.OPEN_ACL_UNSAFE, CreateMode.PERSISTENT);
 				zk.create(Constants.PATH_ORCHESTRATOR_ACTIVE, null, 

@@ -1,19 +1,18 @@
 package zoo;
 
-import java.io.IOException;
 import java.util.concurrent.locks.ReentrantLock;
 
 import org.apache.zookeeper.CreateMode;
 import org.apache.zookeeper.KeeperException;
 import org.apache.zookeeper.WatchedEvent;
 import org.apache.zookeeper.Watcher;
-import org.apache.zookeeper.ZooDefs;
 import org.apache.zookeeper.Watcher.Event.EventType;
+import org.apache.zookeeper.ZooDefs;
 
 public class InstanceManager extends Component {
 	private String imName = null;
 
-	public InstanceManager (String zooUrl, String imName) throws IOException, InterruptedException {
+	public InstanceManager (String zooUrl, String imName) {
 		super(zooUrl);
 		this.imName = imName;
 	}

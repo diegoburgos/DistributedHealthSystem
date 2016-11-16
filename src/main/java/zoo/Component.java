@@ -1,17 +1,9 @@
 package zoo;
 
-import java.io.IOException;
-
-public class Component extends ZooKeeperConnection {
+public class Component extends ZookeeperConnection {
 	
 	public Component (String zoo) {
-		try {
-			this.connect(zoo);
-		} catch (IOException e) {
-			e.printStackTrace();
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}
+		this.connect(zoo);
 	}
 	
 }
